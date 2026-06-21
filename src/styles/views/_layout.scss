@@ -1,0 +1,42 @@
+@use '../variables' as *;
+
+.nav {
+  display: flex;
+  align-items: center;
+  background-color: $bg-deep;
+  border-bottom: 1px solid $border;
+  padding: 0 $space-3;
+  gap: $space-1;
+  flex-shrink: 0;
+
+  &__tab {
+    padding: $space-2 $space-3;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-secondary;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition:
+      color $transition-fast,
+      border-color $transition-fast;
+    margin-bottom: -1px;
+
+    &:hover { color: $text-primary; }
+
+    &--active {
+      color: $text-primary;
+      border-bottom-color: $accent;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(90, 99, 120, 0.35) transparent;
+  display: flex;
+  flex-direction: column;
+}

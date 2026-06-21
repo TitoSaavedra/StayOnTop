@@ -1,0 +1,50 @@
+// ── Typography ───────────────────────────────────────────────────────────────
+$font-family:   'Inter', 'Segoe UI', system-ui, sans-serif;
+$font-size-xs:  0.6875rem;  // 11px
+$font-size-sm:  0.75rem;    // 12px
+$font-size-base: 0.8125rem; // 13px
+$font-size-md:  0.875rem;   // 14px
+
+// ── Spacing ──────────────────────────────────────────────────────────────────
+$space-1: 0.25rem;   // 4px
+$space-2: 0.5rem;    // 8px
+$space-3: 0.75rem;   // 12px
+$space-4: 1rem;      // 16px
+$space-5: 1.25rem;   // 20px
+
+// ── Radius ───────────────────────────────────────────────────────────────────
+$radius-sm:   4px;
+$radius-md:   6px;
+$radius-lg:   10px;
+$radius-full: 9999px;
+
+// ── Transitions ──────────────────────────────────────────────────────────────
+$transition-fast: 120ms ease;
+
+// ── Backgrounds ──────────────────────────────────────────────────────────────
+$bg-deep:     #0d1017;
+$bg-base:     #10141c;
+$bg-surface:  #141821;
+$bg-elevated: rgba(71, 82, 102, 0.25);
+
+// ── Text ─────────────────────────────────────────────────────────────────────
+$text-primary:   #bfbdb6;
+$text-secondary: #5a6378;
+$text-muted:     rgba(90, 99, 120, 0.5);
+
+// ── Borders ──────────────────────────────────────────────────────────────────
+$border: #1b1f29;
+
+// ── Accent (Gold / Amber) ────────────────────────────────────────────────────
+$accent:        #e6b450;
+$accent-hover:  #deae4d;
+$accent-active: #c99938;
+$accent-on:     #765b24;
+$accent-subtle: rgba(230, 180, 80, 0.15);
+$accent-border: rgba(230, 180, 80, 0.3);
+
+// ── Semantic ─────────────────────────────────────────────────────────────────
+$color-success: #aad94c;
+$color-warning: #ffb454;
+$color-error:   #d95757;
+$color-info:    #39bae6;

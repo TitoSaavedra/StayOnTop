@@ -1,0 +1,137 @@
+@use '../variables' as *;
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  &__section {
+    padding: $space-3 $space-4;
+    border-bottom: 1px solid $border;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+
+    &--grow {
+      flex: 1;
+      overflow: hidden;
+      border-bottom: none;
+    }
+  }
+
+  &__section-title {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: $text-secondary;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__add-row {
+    display: flex;
+    gap: $space-2;
+    align-items: flex-end;
+
+    .field { flex: 1; }
+  }
+
+  &__hotkey-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+  }
+
+  &__hotkey-label {
+    font-size: $font-size-base;
+    color: $text-primary;
+  }
+
+  &__footer {
+    padding: $space-3 $space-4;
+    border-top: 1px solid $border;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  &__loading {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid $border;
+    border-top-color: $accent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+}
+
+.hotkey-input {
+  font-family: monospace;
+  font-size: $font-size-sm;
+  background-color: $bg-elevated;
+  color: $text-primary;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  padding: $space-1 $space-2;
+  cursor: pointer;
+  min-width: 80px;
+  text-align: center;
+  transition: border-color $transition-fast, background-color $transition-fast;
+  white-space: nowrap;
+
+  &:hover { border-color: rgba(90, 99, 120, 0.5); }
+
+  &:focus { outline: none; }
+
+  &--capturing {
+    border-color: $accent;
+    background-color: $accent-subtle;
+    color: $accent;
+    animation: pulse-border 1s ease infinite;
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: $accent; }
+  50%       { border-color: rgba(230, 180, 80, 0.4); }
+}
+
+.excluded-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(90, 99, 120, 0.35) transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.excluded-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
+  transition: background-color $transition-fast;
+
+  &:hover { background-color: $bg-elevated; }
+
+  &__name {
+    font-size: $font-size-base;
+    color: $text-primary;
+    font-family: monospace;
+  }
+}

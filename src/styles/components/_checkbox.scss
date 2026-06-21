@@ -1,0 +1,66 @@
+@use '../variables' as *;
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  cursor: pointer;
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__track {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    background-color: rgba(90, 99, 120, 0.25);
+    border: 1px solid $border;
+    border-radius: $radius-full;
+    transition:
+      background-color $transition-fast,
+      border-color $transition-fast;
+    flex-shrink: 0;
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: $text-secondary;
+    border-radius: $radius-full;
+    transition:
+      transform $transition-fast,
+      background-color $transition-fast;
+  }
+
+  &__label {
+    font-size: $font-size-base;
+    color: $text-primary;
+    line-height: 1;
+  }
+
+  &__input:checked + &__track {
+    background-color: $accent-subtle;
+    border-color: $accent-border;
+
+    .toggle__thumb {
+      transform: translateX(14px);
+      background-color: $accent;
+    }
+  }
+
+  &:hover:not(&--disabled) &__track {
+    border-color: rgba(90, 99, 120, 0.6);
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

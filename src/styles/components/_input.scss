@@ -1,0 +1,58 @@
+@use '../variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+
+  &__label {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+  }
+
+  &__input {
+    background-color: $bg-surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $font-size-base;
+    font-family: $font-family;
+    padding: $space-2 $space-3;
+    outline: none;
+    transition:
+      border-color $transition-fast,
+      background-color $transition-fast;
+    width: 100%;
+
+    &::placeholder { color: $text-muted; }
+
+    &:focus {
+      border-color: $accent;
+      background-color: $bg-base;
+    }
+  }
+
+  &__hint {
+    font-size: $font-size-xs;
+    color: $text-secondary;
+
+    &--error { color: $color-error; }
+  }
+
+  &--error &__input {
+    border-color: $color-error;
+
+    &:focus {
+      border-color: $color-error;
+      box-shadow: 0 0 0 2px rgba(217, 87, 87, 0.15);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}

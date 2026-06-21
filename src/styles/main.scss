@@ -1,0 +1,31 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'reset';
+
+// ── Components ───────────────────────────────────────────────────────────────
+@use 'components/button';
+@use 'components/input';
+@use 'components/select';
+@use 'components/checkbox';
+@use 'components/badge';
+@use 'components/slider';
+@use 'components/titlebar';
+@use 'components/statusbar';
+
+// ── Views ────────────────────────────────────────────────────────────────────
+@use 'views/animations';
+@use 'views/layout';
+@use 'views/home';
+@use 'views/settings';
+
+// ── App shell ────────────────────────────────────────────────────────────────
+#app {
+  width: 100vw;
+  height: 100vh;
+  background-color: $bg-base;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,50 @@
+@use '../variables' as *;
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 22px;
+  padding: 0 $space-3;
+  background-color: $bg-deep;
+  border-top: 1px solid $border;
+  flex-shrink: 0;
+
+  &__left,
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__sep {
+    color: $text-muted;
+    font-size: $font-size-xs;
+    line-height: 1;
+  }
+
+  &__item {
+    font-size: $font-size-xs;
+    color: $text-secondary;
+    line-height: 1;
+
+    &--accent {
+      color: $accent;
+    }
+
+    &--selected {
+      color: $text-primary;
+      font-weight: 500;
+    }
+
+    &--hotkey {
+      font-family: monospace;
+      background-color: $bg-elevated;
+      border: 1px solid $border;
+      border-radius: $radius-sm;
+      padding: 1px $space-1;
+      font-size: 10px;
+      color: $text-secondary;
+    }
+  }
+}

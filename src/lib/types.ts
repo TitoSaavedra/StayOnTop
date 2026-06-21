@@ -1,0 +1,34 @@
+export interface ProcessInfo {
+  pid: number;
+  name: string;
+  window_title: string;
+  hwnd: number;
+  icon?: string;
+}
+
+export interface PinnedWindow {
+  hwnd: number;
+  process_name: string;
+  window_title: string;
+  opacity: number;
+  click_through: boolean;
+  icon?: string;
+}
+
+export interface AppSettings {
+  language: 'en' | 'es' | 'pt-br';
+  start_with_windows: boolean;
+  keep_app_on_top: boolean;
+  refresh_interval_ms: number;
+  excluded_processes: string[];
+  hotkey_pin_toggle: string;
+}
+
+export const DEFAULT_SETTINGS: AppSettings = {
+  language: 'en',
+  start_with_windows: false,
+  keep_app_on_top: false,
+  refresh_interval_ms: 5000,
+  excluded_processes: [],
+  hotkey_pin_toggle: 'Alt+P',
+};

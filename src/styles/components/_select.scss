@@ -1,0 +1,56 @@
+@use '../variables' as *;
+
+.select-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+
+  &__label {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__select {
+    appearance: none;
+    width: 100%;
+    background-color: $bg-surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    color: $text-primary;
+    font-size: $font-size-base;
+    font-family: $font-family;
+    padding: $space-2 $space-5 $space-2 $space-3;
+    outline: none;
+    cursor: pointer;
+    transition: border-color $transition-fast;
+
+    &:focus { border-color: $accent; }
+
+    option {
+      background-color: $bg-surface;
+      color: $text-primary;
+    }
+  }
+
+  &__chevron {
+    position: absolute;
+    right: $space-3;
+    color: $text-secondary;
+    pointer-events: none;
+    display: flex;
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,86 @@
+@use '../variables' as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-1;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  font-family: $font-family;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast,
+    opacity $transition-fast;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // ── Sizes ──────────────────────────────────────────────────────────────────
+  &--sm {
+    padding: $space-1 $space-2;
+    font-size: $font-size-xs;
+    border-radius: $radius-sm;
+  }
+
+  &--md {
+    padding: $space-2 $space-3;
+    font-size: $font-size-base;
+  }
+
+  &--lg {
+    padding: $space-2 $space-4;
+    font-size: $font-size-md;
+  }
+
+  // ── Variants ───────────────────────────────────────────────────────────────
+  &--primary {
+    background-color: $accent;
+    color: $accent-on;
+    border-color: rgba(118, 91, 36, 0.1);
+
+    &:hover:not(:disabled) { background-color: $accent-hover; }
+    &:active:not(:disabled) { background-color: $accent-active; }
+  }
+
+  &--secondary {
+    background-color: rgba(90, 99, 120, 0.15);
+    color: $text-primary;
+    border-color: $border;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(90, 99, 120, 0.28);
+      border-color: rgba(90, 99, 120, 0.5);
+    }
+    &:active:not(:disabled) { background-color: rgba(90, 99, 120, 0.35); }
+  }
+
+  &--ghost {
+    background-color: transparent;
+    color: $text-secondary;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(90, 99, 120, 0.12);
+      color: $text-primary;
+    }
+    &:active:not(:disabled) { background-color: rgba(90, 99, 120, 0.2); }
+  }
+
+  &--danger {
+    background-color: rgba(217, 87, 87, 0.12);
+    color: $color-error;
+    border-color: rgba(217, 87, 87, 0.25);
+
+    &:hover:not(:disabled) {
+      background-color: rgba(217, 87, 87, 0.22);
+      border-color: rgba(217, 87, 87, 0.45);
+    }
+  }
+}
