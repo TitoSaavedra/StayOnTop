@@ -5,6 +5,10 @@ const es: Translations = {
     windows: 'Ventanas',
     settings: 'Ajustes',
   },
+  titlebar: {
+    minimize: 'Minimizar',
+    close: 'Cerrar a bandeja',
+  },
   home: {
     pinned: 'Fijadas',
     processes: 'Procesos',
@@ -14,12 +18,14 @@ const es: Translations = {
     onTop: 'Fijada',
     pin: 'Fijar',
     unpin: 'Desfijar',
+    searchPlaceholder: 'Filtrar procesos…',
   },
   settings: {
     general: 'General',
     language: 'Idioma',
     startWithWindows: 'Iniciar con Windows',
     keepOnTop: 'Mantener app siempre visible',
+    defaultOpacity: 'Opacidad al fijar',
     processRefresh: 'Actualización de procesos',
     refreshInterval: 'Intervalo de actualización',
     excludedProcesses: 'Procesos excluidos',

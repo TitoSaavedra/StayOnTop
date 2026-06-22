@@ -30,6 +30,18 @@
     const name = await invoke<string>('get_app_name');
     processesStore.setAppName(name);
     await refreshProcesses();
+
+    // Restore persisted pins
+    const persistedPins = await invoke<PinnedWindow[]>('get_pinned');
+    for (const pin of persistedPins) {
+      try {
+        await invoke('pin_window', { hwnd: pin.hwnd, opacity: pin.opacity, clickThrough: pin.click_through });
+        pinnedStore.add(pin);
+      } catch {
+        // window no longer exists, skip
+      }
+    }
+
     intervalId = setInterval(refreshProcesses, get(settingsStore).refresh_interval_ms);
   });
 
@@ -115,7 +127,7 @@
             class="process-item"
             class:process-item--pinned={alreadyPinned}
             class:process-item--selected={$selectedHwnd === proc.hwnd}
-            onmouseenter={() => { selectedHwnd.set(proc.hwnd); if (pinnedList.length === 0) invoke('show_highlight', { hwnd: proc.hwnd }).catch(() => {}); }}
+            onmouseenter={() => { selectedHwnd.set(proc.hwnd); invoke('show_highlight', { hwnd: proc.hwnd }).catch(() => {}); }}
             onclick={() => selectedHwnd.set(proc.hwnd)}
           >
             <div class="process-item__info">

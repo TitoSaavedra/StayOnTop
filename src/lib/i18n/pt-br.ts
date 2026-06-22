@@ -5,6 +5,10 @@ const ptBr: Translations = {
     windows: 'Janelas',
     settings: 'Configurações',
   },
+  titlebar: {
+    minimize: 'Minimizar',
+    close: 'Fechar para bandeja',
+  },
   home: {
     pinned: 'Fixadas',
     processes: 'Processos',
@@ -14,12 +18,14 @@ const ptBr: Translations = {
     onTop: 'Fixada',
     pin: 'Fixar',
     unpin: 'Desafixar',
+    searchPlaceholder: 'Filtrar processos…',
   },
   settings: {
     general: 'Geral',
     language: 'Idioma',
     startWithWindows: 'Iniciar com o Windows',
     keepOnTop: 'Manter app sempre visível',
+    defaultOpacity: 'Opacidade ao fixar',
     processRefresh: 'Atualização de processos',
     refreshInterval: 'Intervalo de atualização',
     excludedProcesses: 'Processos excluídos',

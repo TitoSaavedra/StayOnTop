@@ -77,6 +77,13 @@ mod win {
     }
 }
 
+pub fn do_unpin(hwnd_raw: isize) -> Result<(), String> {
+    #[cfg(target_os = "windows")]
+    return win::unpin(hwnd_raw);
+    #[cfg(not(target_os = "windows"))]
+    Ok(())
+}
+
 #[tauri::command]
 pub fn pin_window(hwnd: isize, opacity: f32, click_through: bool) -> Result<(), String> {
     #[cfg(target_os = "windows")]

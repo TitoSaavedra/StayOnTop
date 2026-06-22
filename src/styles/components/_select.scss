@@ -1,16 +1,11 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .select-field {
-  display: flex;
-  flex-direction: column;
-  gap: $space-1;
+  @include flex-column;
 
   &__label {
-    font-size: $font-size-xs;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: $text-secondary;
+    @include field-label;
   }
 
   &__wrapper {
@@ -20,16 +15,10 @@
   }
 
   &__select {
+    @include input-base;
     appearance: none;
     width: 100%;
-    background-color: $bg-surface;
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    color: $text-primary;
-    font-size: $font-size-base;
-    font-family: $font-family;
     padding: $space-2 $space-5 $space-2 $space-3;
-    outline: none;
     cursor: pointer;
     transition: border-color $transition-fast;
 
@@ -50,7 +39,6 @@
   }
 
   &--disabled {
-    opacity: 0.4;
-    pointer-events: none;
+    @include disabled;
   }
 }

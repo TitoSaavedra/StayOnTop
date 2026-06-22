@@ -1,4 +1,5 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .titlebar {
   display: flex;
@@ -13,9 +14,7 @@
   -webkit-app-region: drag;
 
   &__identity {
-    display: flex;
-    align-items: center;
-    gap: $space-2;
+    @include flex-row;
   }
 
   &__title {
@@ -26,16 +25,12 @@
   }
 
   &__controls {
-    display: flex;
-    align-items: center;
-    gap: $space-1;
+    @include flex-row($space-1);
     -webkit-app-region: no-drag;
   }
 
   &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     width: 24px;
     height: 24px;
     border-radius: $radius-sm;

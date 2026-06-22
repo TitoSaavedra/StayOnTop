@@ -1,4 +1,5 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .status-bar {
   display: flex;
@@ -12,9 +13,7 @@
 
   &__left,
   &__right {
-    display: flex;
-    align-items: center;
-    gap: $space-2;
+    @include flex-row;
   }
 
   &__sep {

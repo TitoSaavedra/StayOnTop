@@ -5,6 +5,10 @@ fn default_hotkey_pin_toggle() -> String {
     "Alt+P".into()
 }
 
+fn default_opacity() -> f32 {
+    1.0
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
     pub language: String,
@@ -15,6 +19,8 @@ pub struct AppSettings {
     pub excluded_processes: Vec<String>,
     #[serde(default = "default_hotkey_pin_toggle")]
     pub hotkey_pin_toggle: String,
+    #[serde(default = "default_opacity")]
+    pub default_opacity: f32,
 }
 
 impl Default for AppSettings {
@@ -26,6 +32,7 @@ impl Default for AppSettings {
             refresh_interval_ms: 5000,
             excluded_processes: vec![],
             hotkey_pin_toggle: default_hotkey_pin_toggle(),
+            default_opacity: default_opacity(),
         }
     }
 }

@@ -1,27 +1,16 @@
 @use '../variables' as *;
+@use '../mixins' as *;
 
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: $space-1;
+  @include flex-column;
 
   &__label {
-    font-size: $font-size-xs;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: $text-secondary;
+    @include field-label;
   }
 
   &__input {
-    background-color: $bg-surface;
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    color: $text-primary;
-    font-size: $font-size-base;
-    font-family: $font-family;
+    @include input-base;
     padding: $space-2 $space-3;
-    outline: none;
     transition:
       border-color $transition-fast,
       background-color $transition-fast;
@@ -52,7 +41,6 @@
   }
 
   &--disabled {
-    opacity: 0.4;
-    pointer-events: none;
+    @include disabled;
   }
 }

@@ -117,6 +117,17 @@
           onchange={handleSave}
         />
       </div>
+
+      <div class="settings__row">
+        <Slider
+          label={$t.settings.defaultOpacity}
+          bind:value={settings.default_opacity}
+          min={0.1}
+          max={1}
+          step={0.05}
+          onchange={handleSave}
+        />
+      </div>
     </section>
 
     <section class="settings__section">

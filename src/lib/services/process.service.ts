@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
 import type { ProcessInfo } from '$lib/types';
-import { processesStore } from '$lib/stores/processes.store';
+import { processesStore } from '$stores/processes.store';
 
 export async function refreshProcesses(): Promise<void> {
   processesStore.setLoading(true);

@@ -2,8 +2,8 @@ import { invoke } from '@tauri-apps/api/core';
 import { get } from 'svelte/store';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import type { AppSettings } from '$lib/types';
-import { settingsStore } from '$lib/stores/settings.store';
-import { registerHotkey } from '$lib/services/hotkey.service';
+import { settingsStore } from '$stores/settings.store';
+import { registerHotkey } from '$services/hotkey.service';
 
 export async function loadSettings(): Promise<void> {
   const settings = await invoke<AppSettings>('get_settings');

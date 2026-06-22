@@ -22,6 +22,7 @@ export interface AppSettings {
   refresh_interval_ms: number;
   excluded_processes: string[];
   hotkey_pin_toggle: string;
+  default_opacity: number;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -31,4 +32,5 @@ export const DEFAULT_SETTINGS: AppSettings = {
   refresh_interval_ms: 5000,
   excluded_processes: [],
   hotkey_pin_toggle: 'Alt+P',
+  default_opacity: 1,
 };

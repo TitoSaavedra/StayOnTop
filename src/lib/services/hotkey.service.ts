@@ -1,9 +1,9 @@
 import { register, unregister, isRegistered } from '@tauri-apps/plugin-global-shortcut';
 import { invoke } from '@tauri-apps/api/core';
 import { get } from 'svelte/store';
-import { pinnedStore } from '$lib/stores/pinned.store';
-import { processesStore } from '$lib/stores/processes.store';
-import { pinWindow, unpinWindow } from '$lib/services/window.service';
+import { pinnedStore } from '$stores/pinned.store';
+import { processesStore } from '$stores/processes.store';
+import { pinWindow, unpinWindow } from '$services/window.service';
 
 let activeShortcut: string | null = null;
 
@@ -59,7 +59,7 @@ export async function registerHotkey(combo: string): Promise<void> {
 
     const accelerator = toAccelerator(combo);
     await register(accelerator, (event) => {
-      if (event.state === 'Pressed') handleShortcut();
+      if (event.state === 'Pressed') handleShortcut().catch((err) => console.error('[hotkey]', err));
     });
     activeShortcut = accelerator;
   } catch (err) {
