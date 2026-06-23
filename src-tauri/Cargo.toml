@@ -1,12 +1,12 @@
 [package]
-name = "tauri-app"
+name = "stay-on-top"
 version = "0.1.0"
 description = "StayOnTop — pin windows on top"
 authors = ["Tito Saavedra"]
 edition = "2021"
 
 [lib]
-name = "tauri_app_lib"
+name = "stay_on_top_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
@@ -34,5 +34,6 @@ windows = { version = "0.58", features = [
   "Win32_System_ProcessStatus",
   "Win32_System_Registry",
   "Win32_System_LibraryLoader",
+  "Win32_Graphics_Dwm",
 ] }
 

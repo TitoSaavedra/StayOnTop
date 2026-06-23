@@ -10,8 +10,9 @@ mod win {
         DeleteDC, DeleteObject, DIB_RGB_COLORS, HDC, SelectObject,
     };
     use windows::Win32::System::LibraryLoader::GetModuleHandleW;
+    use windows::Win32::Graphics::Dwm::{DwmGetWindowAttribute, DWMWA_EXTENDED_FRAME_BOUNDS};
     use windows::Win32::UI::WindowsAndMessaging::{
-        CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW, GetWindowRect,
+        CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW,
         IsIconic, IsWindowVisible, PostQuitMessage, RegisterClassExW, SetWindowPos,
         ShowWindow, TranslateMessage, UpdateLayeredWindow, CS_HREDRAW, CS_VREDRAW,
         HWND_TOPMOST, MSG, SWP_NOACTIVATE, SW_HIDE, SW_SHOWNOACTIVATE, ULW_ALPHA,
@@ -166,7 +167,12 @@ mod win {
             }
 
             let mut rect = RECT::default();
-            if GetWindowRect(target, &mut rect).is_err() { return; }
+            if DwmGetWindowAttribute(
+                target,
+                DWMWA_EXTENDED_FRAME_BOUNDS,
+                &mut rect as *mut _ as *mut _,
+                std::mem::size_of::<RECT>() as u32,
+            ).is_err() { return; }
 
             let w = rect.right - rect.left;
             let h = rect.bottom - rect.top;
