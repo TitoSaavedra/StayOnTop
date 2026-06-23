@@ -1,6 +1,7 @@
 const en = {
   nav: {
     windows: 'Windows',
+    images: 'Images',
     settings: 'Settings',
   },
   titlebar: {
@@ -34,6 +35,17 @@ const en = {
     hotkeys: 'Keyboard shortcuts',
     pinToggle: 'Pin / Unpin selected',
     pressKeys: 'Click and press keys…',
+  },
+  images: {
+    tab: 'Images',
+    addImage: 'Add Image',
+    noImages: 'No images pinned yet.',
+    opacity: 'Opacity',
+    scale: 'Scale',
+    clickThrough: 'Click-through',
+    unpin: 'Unpin',
+    unpinAll: 'Unpin all',
+    onTop: 'On Top',
   },
   status: {
     processes: 'processes',

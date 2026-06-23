@@ -3,6 +3,7 @@ import type { Translations } from './en';
 const es: Translations = {
   nav: {
     windows: 'Ventanas',
+    images: 'Imágenes',
     settings: 'Ajustes',
   },
   titlebar: {
@@ -36,6 +37,17 @@ const es: Translations = {
     hotkeys: 'Atajos de teclado',
     pinToggle: 'Fijar / Desfijar seleccionado',
     pressKeys: 'Haz clic y presiona las teclas…',
+  },
+  images: {
+    tab: 'Imágenes',
+    addImage: 'Agregar imagen',
+    noImages: 'Sin imágenes fijadas.',
+    opacity: 'Opacidad',
+    scale: 'Escala',
+    clickThrough: 'Clic a través',
+    unpin: 'Desfijar',
+    unpinAll: 'Desfijar todo',
+    onTop: 'Fijada',
   },
   status: {
     processes: 'procesos',

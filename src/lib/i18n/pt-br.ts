@@ -3,6 +3,7 @@ import type { Translations } from './en';
 const ptBr: Translations = {
   nav: {
     windows: 'Janelas',
+    images: 'Imagens',
     settings: 'Configurações',
   },
   titlebar: {
@@ -36,6 +37,17 @@ const ptBr: Translations = {
     hotkeys: 'Atalhos de teclado',
     pinToggle: 'Fixar / Desafixar selecionado',
     pressKeys: 'Clique e pressione as teclas…',
+  },
+  images: {
+    tab: 'Imagens',
+    addImage: 'Adicionar imagem',
+    noImages: 'Nenhuma imagem fixada.',
+    opacity: 'Opacidade',
+    scale: 'Escala',
+    clickThrough: 'Clique atravessante',
+    unpin: 'Desafixar',
+    unpinAll: 'Desafixar tudo',
+    onTop: 'Fixada',
   },
   status: {
     processes: 'processos',

@@ -13,6 +13,7 @@
 
   const tabs = $derived([
     { path: '/',         label: $t.nav.windows },
+    { path: '/images',   label: $t.nav.images },
     { path: '/settings', label: $t.nav.settings },
   ]);
 

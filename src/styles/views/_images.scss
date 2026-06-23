@@ -1,0 +1,127 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.images {
+  display: flex;
+  flex-direction: column;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    padding: $space-3;
+  }
+
+  &__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $space-3;
+  }
+
+  &__section-title {
+    @include section-label;
+  }
+
+  &__header-actions {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__add-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    margin-top: $space-2;
+    padding: $space-2;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    color: $text-secondary;
+    cursor: pointer;
+    border: 1px dashed transparent;
+    transition: color $transition-fast, border-color $transition-fast, background-color $transition-fast;
+
+    &:hover {
+      color: $text-primary;
+      border-color: $border;
+      background-color: $bg-elevated;
+    }
+  }
+
+  &__drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    padding: $space-5 $space-3;
+    border-radius: $radius-md;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: color $transition-fast, background-color $transition-fast;
+
+    span { font-size: $font-size-sm; }
+
+    &:hover {
+      color: $text-primary;
+      background-color: $bg-elevated;
+    }
+  }
+}
+
+// ── Scale row with reset ──────────────────────────────────────────────────────
+
+.scale-row {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-1;
+
+  .slider-field { flex: 1; min-width: 0; }
+
+  .scale-reset {
+    flex-shrink: 0;
+    margin-top: 1px;
+    padding: $space-1;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+}
+
+// ── Pinned image list ─────────────────────────────────────────────────────────
+
+.img-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.img-item {
+  background-color: $bg-surface;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: $space-2 $space-3;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-bottom: $space-2;
+
+    .btn:last-child { margin-left: auto; }
+  }
+
+  &__name {
+    font-size: $font-size-base;
+    font-weight: 600;
+    color: $text-primary;
+    @include truncate;
+    flex: 1;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+  }
+}

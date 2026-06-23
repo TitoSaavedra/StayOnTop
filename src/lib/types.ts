@@ -25,6 +25,18 @@ export interface AppSettings {
   default_opacity: number;
 }
 
+export interface PinnedImage {
+  id: string;
+  path: string;
+  x: number;
+  y: number;
+  opacity: number;
+  scale: number;
+  click_through: boolean;
+  /** basename extracted on the frontend for display */
+  filename?: string;
+}
+
 export const DEFAULT_SETTINGS: AppSettings = {
   language: 'en',
   start_with_windows: false,

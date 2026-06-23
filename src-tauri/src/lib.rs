@@ -3,6 +3,11 @@ mod commands;
 use tauri::Manager;
 use commands::{
     highlight::{clear_highlight, show_highlight},
+    image_window::{
+        close_all_image_windows, get_image_position, get_pinned_images, pin_image,
+        save_pinned_images, set_image_click_through, set_image_opacity, set_image_scale,
+        unpin_image,
+    },
     pinned::{get_pinned, read_pinned, save_pinned},
     process::{get_app_name, get_processes},
     settings::{get_settings, register_startup, save_settings},
@@ -17,12 +22,14 @@ fn quit_app(app: tauri::AppHandle) {
     for pin in read_pinned() {
         let _ = do_unpin(pin.hwnd);
     }
+    close_all_image_windows();
     app.exit(0);
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .setup(|app| {
             use tauri::menu::{Menu, MenuItem};
@@ -48,6 +55,7 @@ pub fn run() {
                         for pin in read_pinned() {
                             let _ = do_unpin(pin.hwnd);
                         }
+                        close_all_image_windows();
                         app.exit(0);
                     }
                     _ => {}
@@ -91,6 +99,14 @@ pub fn run() {
             clear_highlight,
             get_pinned,
             save_pinned,
+            pin_image,
+            unpin_image,
+            set_image_opacity,
+            set_image_scale,
+            set_image_click_through,
+            get_image_position,
+            get_pinned_images,
+            save_pinned_images,
             quit_app,
         ])
         .run(tauri::generate_context!())
