@@ -2,40 +2,173 @@
 @use '../mixins' as *;
 
 .settings {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
   overflow: hidden;
 
-  &__section {
-    padding: $space-3 $space-4;
-    border-bottom: 1px solid $border;
+  &__body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+  }
+
+  // ── Sidebar ──────────────────────────────────────────────────────────────
+  &__sidebar {
+    width: 74px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: $space-3;
+    background-color: $bg-deep;
+    border-right: 1px solid $border;
+    padding: $space-2 0;
+  }
 
-    &--grow {
-      flex: 1;
-      overflow: hidden;
-      border-bottom: none;
+  &__nav-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-1;
+    padding: $space-3 $space-2;
+    color: $text-secondary;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    transition: color $transition-fast, background-color $transition-fast;
+
+    &:hover {
+      color: $text-primary;
+      background-color: $bg-elevated;
+    }
+
+    &--active {
+      color: $accent;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 6px;
+        bottom: 6px;
+        width: 2px;
+        background-color: $accent;
+        border-radius: 0 $radius-sm $radius-sm 0;
+      }
     }
   }
 
-  &__section-title {
+  &__nav-label {
+    font-size: $font-size-xs;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  &__nav-badge {
+    position: absolute;
+    top: $space-1;
+    right: $space-1;
+    background-color: $accent-on;
+    color: $accent;
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    padding: 1px 3px;
+    border-radius: $radius-full;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  // ── Content ───────────────────────────────────────────────────────────────
+  &__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  // ── Unsaved changes banner ─────────────────────────────────────────────────
+  &__banner {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-3;
+    background-color: $accent-subtle;
+    border-bottom: 1px solid $accent-border;
+    flex-shrink: 0;
+    animation: banner-in 140ms ease;
+
+    &-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: $accent;
+      flex-shrink: 0;
+    }
+
+    &-text {
+      flex: 1;
+      font-size: $font-size-sm;
+      color: $text-secondary;
+    }
+
+    &-discard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: $text-secondary;
+      cursor: pointer;
+      padding: 3px;
+      border-radius: $radius-sm;
+      transition: color $transition-fast, background-color $transition-fast;
+
+      &:hover { color: $text-primary; background-color: $bg-elevated; }
+    }
+
+    &-save {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: $accent;
+      cursor: pointer;
+      padding: 3px;
+      border-radius: $radius-sm;
+      transition: background-color $transition-fast;
+
+      &:hover    { background-color: $accent-border; }
+      &:disabled { opacity: 0.45; cursor: not-allowed; }
+    }
+  }
+
+  &__panel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: $space-4;
+    gap: $space-4;
+    overflow-y: auto;
+    @include scrollbar;
+
+    &--fill { overflow: hidden; }
+  }
+
+  &__panel-title {
     @include section-label;
   }
 
-  &__row {
+  &__group {
     display: flex;
     flex-direction: column;
-  }
-
-  &__add-row {
-    display: flex;
-    gap: $space-2;
-    align-items: flex-end;
-
-    .field { flex: 1; }
+    gap: $space-3;
   }
 
   &__hotkey-row {
@@ -50,14 +183,7 @@
     color: $text-primary;
   }
 
-  &__footer {
-    padding: $space-3 $space-4;
-    border-top: 1px solid $border;
-    display: flex;
-    justify-content: flex-end;
-    flex-shrink: 0;
-  }
-
+  // ── Loading state ─────────────────────────────────────────────────────────
   &__loading {
     flex: 1;
     @include flex-center;
@@ -73,6 +199,12 @@
   }
 }
 
+@keyframes banner-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Hotkey capture ─────────────────────────────────────────────────────────
 .hotkey-input {
   font-family: monospace;
   font-size: $font-size-sm;
@@ -88,8 +220,7 @@
   white-space: nowrap;
 
   &:hover { border-color: rgba(90, 99, 120, 0.5); }
-
-  &:focus { outline: none; }
+  &:focus  { outline: none; }
 
   &--capturing {
     border-color: $accent;
@@ -104,28 +235,210 @@
   50%       { border-color: rgba(230, 180, 80, 0.4); }
 }
 
-.excluded-list {
+// ── Excluded processes ──────────────────────────────────────────────────────
+.excluded {
   flex: 1;
-  overflow-y: auto;
-  @include scrollbar;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+
+  &__list {
+    flex: 1;
+    overflow-y: auto;
+    @include scrollbar;
+    display: flex;
+    flex-direction: column;
+    padding: $space-1 0;
+  }
+
+  &__empty {
+    flex: 1;
+    @include flex-center;
+    color: $text-muted;
+    font-size: $font-size-sm;
+    text-align: center;
+  }
+
+  &__divider {
+    height: 1px;
+    background-color: $border;
+    flex-shrink: 0;
+  }
+
+  &__add-row {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    padding: $space-1 $space-2;
+    flex-shrink: 0;
+  }
+
+  &__add-input {
+    flex: 1;
+    min-width: 0;
+    background: none;
+    border: none;
+    outline: none;
+    color: $text-primary;
+    font-size: $font-size-base;
+    font-family: monospace;
+
+    &::placeholder { color: $text-muted; }
+  }
+
+  &__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 2px;
+    border-radius: $radius-sm;
+    color: $text-muted;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: color $transition-fast;
+
+    &:not(:disabled):hover { color: $accent; }
+    &:disabled { opacity: 0.25; cursor: default; }
+  }
+}
+
+// ── About panel ────────────────────────────────────────────────────────────
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  &__app {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  &__name {
+    font-size: $font-size-md;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__version {
+    font-size: $font-size-sm;
+    font-family: monospace;
+    color: $text-secondary;
+  }
+
+  &__divider {
+    height: 1px;
+    background-color: $border;
+  }
+
+  &__made-by {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    margin-bottom: -$space-1;
+  }
+
+  &__person {
+    font-size: $font-size-base;
+    color: $text-primary;
+    font-weight: 500;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: $font-size-sm;
+    font-family: $font-family;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: color $transition-fast;
+
+    &:hover { color: $accent; }
+  }
+
+  &__author {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+  }
+
+  &__updates {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  &__status {
+    font-size: $font-size-sm;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    &--ok    { color: $color-success; }
+    &--new   { color: $accent; }
+    &--error { color: $color-error; }
+  }
+
+  &__update-row {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+  }
+
+  &__progress {
+    height: 3px;
+    background-color: $bg-elevated;
+    border-radius: $radius-full;
+    overflow: hidden;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background-color: $accent;
+    border-radius: $radius-full;
+    transition: width 200ms ease;
+  }
 }
 
 .excluded-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: $space-1 $space-2;
   border-radius: $radius-sm;
   transition: background-color $transition-fast;
 
-  &:hover { background-color: $bg-elevated; }
+  &:hover {
+    background-color: $bg-elevated;
+    .excluded-item__remove { opacity: 1; }
+  }
 
   &__name {
+    flex: 1;
     font-size: $font-size-base;
     color: $text-primary;
     font-family: monospace;
+    @include truncate;
+  }
+
+  &__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    background: none;
+    border: none;
+    padding: 2px;
+    border-radius: $radius-sm;
+    color: $text-secondary;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: opacity $transition-fast, color $transition-fast;
+
+    &:hover { color: $color-error; }
   }
 }

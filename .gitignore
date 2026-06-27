@@ -6,5 +6,8 @@ node_modules
 .env
 .env.*
 !.env.example
+
+# Tauri signing keys — never commit
+*.key
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

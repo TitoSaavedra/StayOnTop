@@ -6,3 +6,6 @@ export { default as Badge } from './Badge.svelte';
 export { default as Slider } from './Slider.svelte';
 export { default as TitleBar } from './TitleBar.svelte';
 export { default as StatusBar } from './StatusBar.svelte';
+export { default as PinnedWindowItem } from './PinnedWindowItem.svelte';
+export { default as ProcessItem } from './ProcessItem.svelte';
+export { default as ImageItem } from './ImageItem.svelte';

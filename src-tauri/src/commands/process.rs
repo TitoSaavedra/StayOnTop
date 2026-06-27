@@ -13,7 +13,7 @@ pub struct ProcessInfo {
 mod win {
     use super::ProcessInfo;
     use std::collections::HashMap;
-    use windows::Win32::Foundation::{BOOL, HANDLE, HWND, LPARAM};
+    use windows::Win32::Foundation::{BOOL, CloseHandle, HANDLE, HWND, LPARAM};
     use windows::Win32::Graphics::Gdi::{
         CreateCompatibleDC, CreateDIBSection, DeleteDC, DeleteObject, SelectObject,
         BITMAPINFO, BITMAPINFOHEADER, DIB_RGB_COLORS, HBRUSH,
@@ -168,31 +168,31 @@ mod win {
                 dwSize: std::mem::size_of::<PROCESSENTRY32W>() as u32,
                 ..Default::default()
             };
-            if Process32FirstW(snap, &mut entry).is_err() {
-                return results;
-            }
-            loop {
-                let pid = entry.th32ProcessID;
-                if let Some(windows) = state.map.get(&pid) {
-                    let nul = entry.szExeFile.iter().position(|&c| c == 0).unwrap_or(entry.szExeFile.len());
-                    let name = String::from_utf16_lossy(&entry.szExeFile[..nul]);
+            if Process32FirstW(snap, &mut entry).is_ok() {
+                loop {
+                    let pid = entry.th32ProcessID;
+                    if let Some(wins) = state.map.get(&pid) {
+                        let nul = entry.szExeFile.iter().position(|&c| c == 0).unwrap_or(entry.szExeFile.len());
+                        let name = String::from_utf16_lossy(&entry.szExeFile[..nul]);
 
-                    if !app_name.is_empty() && name.eq_ignore_ascii_case(app_name) {
-                        if Process32NextW(snap, &mut entry).is_err() { break; }
-                        continue;
+                        if !app_name.is_empty() && name.eq_ignore_ascii_case(app_name) {
+                            if Process32NextW(snap, &mut entry).is_err() { break; }
+                            continue;
+                        }
+
+                        let icon = icon_cache
+                            .entry(name.clone())
+                            .or_insert_with(|| get_exe_path(pid).and_then(|p| extract_icon(&p)))
+                            .clone();
+
+                        for (hwnd, title) in wins {
+                            results.push(ProcessInfo { pid, name: name.clone(), window_title: title.clone(), hwnd: *hwnd, icon: icon.clone() });
+                        }
                     }
-
-                    let icon = icon_cache
-                        .entry(name.clone())
-                        .or_insert_with(|| get_exe_path(pid).and_then(|p| extract_icon(&p)))
-                        .clone();
-
-                    for (hwnd, title) in windows {
-                        results.push(ProcessInfo { pid, name: name.clone(), window_title: title.clone(), hwnd: *hwnd, icon: icon.clone() });
-                    }
+                    if Process32NextW(snap, &mut entry).is_err() { break; }
                 }
-                if Process32NextW(snap, &mut entry).is_err() { break; }
             }
+            let _ = CloseHandle(snap);
         }
 
         results.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));

@@ -90,30 +90,31 @@ pub fn register_startup(enabled: bool) -> Result<(), String> {
             .ok()
             .map_err(|e| e.to_string())?;
 
-            if enabled {
-                let exe = std::env::current_exe()
-                    .map_err(|e| e.to_string())?
-                    .to_string_lossy()
-                    .to_string();
-                let exe_w: Vec<u16> = exe.encode_utf16().chain(std::iter::once(0)).collect();
-                let data = std::slice::from_raw_parts(
-                    exe_w.as_ptr() as *const u8,
-                    exe_w.len() * 2,
-                );
-                RegSetValueExW(
-                    hkey,
-                    PCWSTR(value_name.as_ptr()),
-                    0,
-                    REG_SZ,
-                    Some(data),
-                )
-                .ok()
-                .map_err(|e| e.to_string())?;
+            // Collect the result so hkey is always closed before returning.
+            let result: Result<(), String> = if enabled {
+                let exe_result = std::env::current_exe()
+                    .map_err(|e| e.to_string())
+                    .map(|p| p.to_string_lossy().to_string());
+                match exe_result {
+                    Err(e) => Err(e),
+                    Ok(exe) => {
+                        let exe_w: Vec<u16> = exe.encode_utf16().chain(std::iter::once(0)).collect();
+                        let data = std::slice::from_raw_parts(
+                            exe_w.as_ptr() as *const u8,
+                            exe_w.len() * 2,
+                        );
+                        RegSetValueExW(hkey, PCWSTR(value_name.as_ptr()), 0, REG_SZ, Some(data))
+                            .ok()
+                            .map_err(|e| e.to_string())
+                    }
+                }
             } else {
                 let _ = RegDeleteValueW(hkey, PCWSTR(value_name.as_ptr()));
-            }
+                Ok(())
+            };
 
-            RegCloseKey(hkey).ok().map_err(|e| e.to_string())?;
+            let _ = RegCloseKey(hkey);
+            result?;
         }
     }
     Ok(())

@@ -4,10 +4,23 @@ mod win {
     use std::mem::size_of;
     use std::sync::{Arc, Condvar, Mutex, OnceLock};
 
-    use windows::Win32::Foundation::*;
-    use windows::Win32::Graphics::Gdi::*;
+    use windows::Win32::Foundation::{COLORREF, HANDLE, HINSTANCE, HWND, LPARAM, LRESULT, POINT, RECT, SIZE, WPARAM};
+    use windows::Win32::Graphics::Gdi::{
+        BITMAPINFO, BITMAPINFOHEADER, BLENDFUNCTION, CreateCompatibleDC, CreateDIBSection,
+        DeleteDC, DeleteObject, DIB_RGB_COLORS, HDC, SelectObject,
+    };
     use windows::Win32::System::LibraryLoader::GetModuleHandleW;
-    use windows::Win32::UI::WindowsAndMessaging::*;
+    use windows::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DispatchMessageW, GetCursorPos, GetMessageW,
+        GetWindowLongW, GetWindowLongPtrW, GetWindowRect, PostMessageW, PostQuitMessage,
+        RegisterClassExW, SetWindowLongPtrW, SetWindowLongW, SetWindowPos, ShowWindow,
+        TranslateMessage, UpdateLayeredWindow,
+        CREATESTRUCTW, CS_HREDRAW, CS_VREDRAW, GWL_EXSTYLE, GWLP_USERDATA, HTCLIENT,
+        HWND_TOPMOST, MSG, SW_HIDE, SW_SHOWNOACTIVATE, SWP_NOACTIVATE, SWP_NOMOVE,
+        SWP_NOSIZE, SWP_NOZORDER, ULW_ALPHA, WM_CLOSE, WM_CREATE, WM_DESTROY,
+        WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MOUSEMOVE, WM_NCHITTEST, WM_USER, WNDCLASSEXW,
+        WS_EX_LAYERED, WS_EX_TOPMOST, WS_EX_TRANSPARENT, WS_POPUP,
+    };
     use windows::core::PCWSTR;
 
     const WM_IMG_REDRAW: u32 = WM_USER + 100;

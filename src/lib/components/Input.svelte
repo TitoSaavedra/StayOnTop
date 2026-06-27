@@ -7,6 +7,7 @@
     disabled = false,
     type = 'text',
     id = `input-${Math.random().toString(36).slice(2, 7)}`,
+    onkeydown,
   }: {
     value?: string;
     label?: string;
@@ -15,6 +16,7 @@
     disabled?: boolean;
     type?: 'text' | 'password' | 'search';
     id?: string;
+    onkeydown?: (e: KeyboardEvent) => void;
   } = $props();
 </script>
 
@@ -28,6 +30,7 @@
     {type}
     {placeholder}
     {disabled}
+    {onkeydown}
     bind:value
     class="field__input"
   />

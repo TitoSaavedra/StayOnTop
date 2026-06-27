@@ -17,8 +17,7 @@ use commands::{
     },
 };
 
-#[tauri::command]
-fn quit_app(app: tauri::AppHandle) {
+fn shutdown(app: &tauri::AppHandle) {
     for pin in read_pinned() {
         let _ = do_unpin(pin.hwnd);
     }
@@ -26,11 +25,18 @@ fn quit_app(app: tauri::AppHandle) {
     app.exit(0);
 }
 
+#[tauri::command]
+fn quit_app(app: tauri::AppHandle) {
+    shutdown(&app);
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .setup(|app| {
             use tauri::menu::{Menu, MenuItem};
             use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
@@ -51,13 +57,7 @@ pub fn run() {
                             let _ = win.set_focus();
                         }
                     }
-                    "quit" => {
-                        for pin in read_pinned() {
-                            let _ = do_unpin(pin.hwnd);
-                        }
-                        close_all_image_windows();
-                        app.exit(0);
-                    }
+                    "quit" => shutdown(app),
                     _ => {}
                 })
                 .on_tray_icon_event(|tray, event| {
