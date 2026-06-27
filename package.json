@@ -1,6 +1,6 @@
 {
   "name": "stayontop",
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@10.12.1",
   "version": "0.1.0",
   "description": "",
   "type": "module",
@@ -13,6 +13,9 @@
     "tauri": "tauri"
   },
   "license": "MIT",
+  "pnpm": {
+    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild"]
+  },
   "dependencies": {
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-dialog": "^2",
