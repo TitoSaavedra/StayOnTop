@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - releases
 
 permissions:
   contents: write
@@ -43,8 +43,8 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: StayOnTop ${{ github.ref_name }}
+          tagName: v__VERSION__
+          releaseName: StayOnTop v__VERSION__
           releaseDraft: false
           prerelease: false
           updaterJsonPreferNsis: true
