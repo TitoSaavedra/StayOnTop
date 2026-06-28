@@ -372,18 +372,8 @@
 
               <div class="about__author">
                 <span class="about__made-by">{$t.settings.madeBy}</span>
-                <span class="about__person">Tito Saavedra</span>
-                <button class="about__link" onclick={() => openUrl('https://github.com/TitoSaavedra')}>
-                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-                    <path d="M2 9L9 2M9 2H4M9 2V7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  github.com/TitoSaavedra
-                </button>
                 <button class="about__link" onclick={() => openUrl('https://github.com/TitoSaavedra/StayOnTop')}>
-                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-                    <path d="M2 9L9 2M9 2H4M9 2V7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {$t.settings.viewRepository}
+                  Tito Saavedra
                 </button>
               </div>
 
