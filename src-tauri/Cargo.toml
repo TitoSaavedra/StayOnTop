@@ -1,6 +1,6 @@
 [package]
 name = "stay-on-top"
-version = "1.0.0"
+version = "1.0.1"
 description = "StayOnTop — pin windows on top"
 authors = ["Tito Saavedra"]
 edition = "2021"
