@@ -44,7 +44,7 @@
 
     &:hover {
       color: $text-primary;
-      background-color: rgba(90, 99, 120, 0.15);
+      background-color: $surface-secondary;
     }
 
     &--close:hover {

@@ -15,6 +15,13 @@ export interface PinnedWindow {
   icon?: string;
 }
 
+export interface WindowRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface AppSettings {
   language: 'en' | 'es' | 'pt-br';
   start_with_windows: boolean;
@@ -23,6 +30,7 @@ export interface AppSettings {
   excluded_processes: string[];
   hotkey_pin_toggle: string;
   default_opacity: number;
+  theme: 'dark' | 'light';
 }
 
 export interface PinnedImage {
@@ -45,4 +53,5 @@ export const DEFAULT_SETTINGS: AppSettings = {
   excluded_processes: [],
   hotkey_pin_toggle: 'Alt+P',
   default_opacity: 1,
+  theme: 'dark',
 };

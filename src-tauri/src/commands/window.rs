@@ -1,10 +1,19 @@
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub struct WindowRect {
+    pub x: i32,
+    pub y: i32,
+    pub width: i32,
+    pub height: i32,
+}
+
 #[cfg(target_os = "windows")]
 mod win {
+    use super::WindowRect;
     use windows::Win32::Foundation::HWND;
     use windows::Win32::UI::WindowsAndMessaging::{
-        GetWindowLongW, SetLayeredWindowAttributes, SetWindowLongW, SetWindowPos,
-        GWL_EXSTYLE, HWND_NOTOPMOST, HWND_TOPMOST, LWA_ALPHA, SWP_NOACTIVATE, SWP_NOMOVE,
-        SWP_NOSIZE, WS_EX_LAYERED, WS_EX_TRANSPARENT,
+        GetWindowLongW, GetWindowRect, IsWindow, SetLayeredWindowAttributes, SetWindowLongW,
+        SetWindowPos, GWL_EXSTYLE, HWND_NOTOPMOST, HWND_TOPMOST, LWA_ALPHA, SWP_NOACTIVATE,
+        SWP_NOMOVE, SWP_NOSIZE, SWP_NOZORDER, WS_EX_LAYERED, WS_EX_TRANSPARENT,
     };
 
     fn hwnd(raw: isize) -> HWND {
@@ -75,6 +84,35 @@ mod win {
         }
         Ok(())
     }
+
+    pub fn is_valid(hwnd_raw: isize) -> bool {
+        unsafe { IsWindow(hwnd(hwnd_raw)).as_bool() }
+    }
+
+    pub fn get_rect(hwnd_raw: isize) -> Option<WindowRect> {
+        unsafe {
+            let mut r = windows::Win32::Foundation::RECT::default();
+            GetWindowRect(hwnd(hwnd_raw), &mut r).ok()?;
+            Some(WindowRect {
+                x: r.left,
+                y: r.top,
+                width: r.right - r.left,
+                height: r.bottom - r.top,
+            })
+        }
+    }
+
+    pub fn set_pos_size(hwnd_raw: isize, x: i32, y: i32, width: i32, height: i32) -> Result<(), String> {
+        unsafe {
+            SetWindowPos(
+                hwnd(hwnd_raw),
+                HWND::default(),
+                x, y, width, height,
+                SWP_NOACTIVATE | SWP_NOZORDER,
+            )
+            .map_err(|e| format!("SetWindowPos failed: {e}"))
+        }
+    }
 }
 
 pub fn do_unpin(hwnd_raw: isize) -> Result<(), String> {
@@ -116,6 +154,30 @@ pub fn set_window_click_through(hwnd: isize, click_through: bool) -> Result<(), 
     Ok(())
 }
 
+#[tauri::command]
+pub fn is_window_valid(hwnd: isize) -> bool {
+    #[cfg(target_os = "windows")]
+    return win::is_valid(hwnd);
+    #[cfg(not(target_os = "windows"))]
+    false
+}
+
+#[tauri::command]
+pub fn get_window_rect(hwnd: isize) -> Option<WindowRect> {
+    #[cfg(target_os = "windows")]
+    return win::get_rect(hwnd);
+    #[cfg(not(target_os = "windows"))]
+    None
+}
+
+#[tauri::command]
+pub fn set_window_pos_size(hwnd: isize, x: i32, y: i32, width: i32, height: i32) -> Result<(), String> {
+    #[cfg(target_os = "windows")]
+    return win::set_pos_size(hwnd, x, y, width, height);
+    #[cfg(not(target_os = "windows"))]
+    Ok(())
+}
+
 /// Returns the HWND of the current OS foreground window.
 #[tauri::command]
 pub fn get_foreground_window() -> Option<isize> {
@@ -130,4 +192,3 @@ pub fn get_foreground_window() -> Option<isize> {
     #[cfg(not(target_os = "windows"))]
     None
 }
-

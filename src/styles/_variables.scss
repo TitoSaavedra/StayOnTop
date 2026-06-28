@@ -1,16 +1,16 @@
 // ── Typography ───────────────────────────────────────────────────────────────
-$font-family:   'Inter', 'Segoe UI', system-ui, sans-serif;
-$font-size-xs:  0.6875rem;  // 11px
-$font-size-sm:  0.75rem;    // 12px
-$font-size-base: 0.8125rem; // 13px
-$font-size-md:  0.875rem;   // 14px
+$font-family:    'Inter', 'Segoe UI', system-ui, sans-serif;
+$font-size-xs:   0.6875rem;  // 11px
+$font-size-sm:   0.75rem;    // 12px
+$font-size-base: 0.8125rem;  // 13px
+$font-size-md:   0.875rem;   // 14px
 
 // ── Spacing ──────────────────────────────────────────────────────────────────
-$space-1: 0.25rem;   // 4px
-$space-2: 0.5rem;    // 8px
-$space-3: 0.75rem;   // 12px
-$space-4: 1rem;      // 16px
-$space-5: 1.25rem;   // 20px
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
 
 // ── Radius ───────────────────────────────────────────────────────────────────
 $radius-sm:   4px;
@@ -21,21 +21,30 @@ $radius-full: 9999px;
 // ── Transitions ──────────────────────────────────────────────────────────────
 $transition-fast: 120ms ease;
 
-// ── Backgrounds ──────────────────────────────────────────────────────────────
-$bg-deep:     #0d1017;
-$bg-base:     #10141c;
-$bg-surface:  #141821;
-$bg-elevated: rgba(71, 82, 102, 0.25);
+// ── SCSS aliases pointing to CSS custom properties ────────────────────────────
+// Colors
+$bg-deep:     var(--bg-deep);
+$bg-base:     var(--bg-base);
+$bg-surface:  var(--bg-surface);
+$bg-elevated: var(--bg-elevated);
 
-// ── Text ─────────────────────────────────────────────────────────────────────
-$text-primary:   #bfbdb6;
-$text-secondary: #5a6378;
-$text-muted:     rgba(90, 99, 120, 0.5);
+$text-primary:   var(--text-primary);
+$text-secondary: var(--text-secondary);
+$text-muted:     var(--text-muted);
 
-// ── Borders ──────────────────────────────────────────────────────────────────
-$border: #1b1f29;
+$border: var(--border);
 
-// ── Accent (Gold / Amber) ────────────────────────────────────────────────────
+// Interaction surfaces
+$surface-hover:              var(--surface-hover);
+$surface-active:             var(--surface-active);
+$surface-secondary:          var(--surface-secondary);
+$surface-secondary-hover:    var(--surface-secondary-hover);
+$surface-secondary-active:   var(--surface-secondary-active);
+$surface-secondary-border:   var(--surface-secondary-border);
+$scrollbar-thumb:            var(--scrollbar-thumb);
+$scrollbar-thumb-hover:      var(--scrollbar-thumb-hover);
+
+// Accent (unchanged across themes)
 $accent:        #e6b450;
 $accent-hover:  #deae4d;
 $accent-active: #c99938;
@@ -43,8 +52,54 @@ $accent-on:     #765b24;
 $accent-subtle: rgba(230, 180, 80, 0.15);
 $accent-border: rgba(230, 180, 80, 0.3);
 
-// ── Semantic ─────────────────────────────────────────────────────────────────
+// Semantic (unchanged across themes)
 $color-success: #aad94c;
 $color-warning: #ffb454;
 $color-error:   #d95757;
 $color-info:    #39bae6;
+
+// ── Dark theme (default) ──────────────────────────────────────────────────────
+:root {
+  --bg-deep:    #0d1017;
+  --bg-base:    #10141c;
+  --bg-surface: #141821;
+  --bg-elevated: rgba(71, 82, 102, 0.25);
+
+  --text-primary:   #bfbdb6;
+  --text-secondary: #5a6378;
+  --text-muted:     rgba(90, 99, 120, 0.5);
+
+  --border: #1b1f29;
+
+  --surface-hover:             rgba(90, 99, 120, 0.12);
+  --surface-active:            rgba(90, 99, 120, 0.2);
+  --surface-secondary:         rgba(90, 99, 120, 0.15);
+  --surface-secondary-hover:   rgba(90, 99, 120, 0.28);
+  --surface-secondary-active:  rgba(90, 99, 120, 0.35);
+  --surface-secondary-border:  rgba(90, 99, 120, 0.5);
+  --scrollbar-thumb:           rgba(90, 99, 120, 0.4);
+  --scrollbar-thumb-hover:     rgba(90, 99, 120, 0.6);
+}
+
+// ── Light theme ───────────────────────────────────────────────────────────────
+:root[data-theme="light"] {
+  --bg-deep:    #e8ecf0;
+  --bg-base:    #f0f3f7;
+  --bg-surface: #ffffff;
+  --bg-elevated: rgba(0, 0, 0, 0.06);
+
+  --text-primary:   #1e2330;
+  --text-secondary: #6b7385;
+  --text-muted:     rgba(107, 115, 133, 0.6);
+
+  --border: #d8dce6;
+
+  --surface-hover:             rgba(0, 0, 0, 0.05);
+  --surface-active:            rgba(0, 0, 0, 0.09);
+  --surface-secondary:         rgba(0, 0, 0, 0.06);
+  --surface-secondary-hover:   rgba(0, 0, 0, 0.10);
+  --surface-secondary-active:  rgba(0, 0, 0, 0.14);
+  --surface-secondary-border:  rgba(0, 0, 0, 0.25);
+  --scrollbar-thumb:           rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover:     rgba(0, 0, 0, 0.35);
+}

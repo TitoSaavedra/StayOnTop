@@ -9,8 +9,38 @@
   import { unpinAll } from '$services/window.service';
   import { t } from '$lib/i18n';
   import type { PinnedWindow } from '$lib/types';
+  import { pinWindow, unpinWindow } from '$services/window.service';
+  import { get } from 'svelte/store';
 
   const { filtered: filteredProcesses, loading, error, selectedHwnd } = processesStore;
+
+  function handleListKeydown(e: KeyboardEvent) {
+    const procs = get(filteredProcesses);
+    if (!procs.length) return;
+
+    const current = get(selectedHwnd);
+    const idx = current != null ? procs.findIndex((p) => p.hwnd === current) : -1;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = procs[idx + 1] ?? procs[0];
+      selectedHwnd.set(next.hwnd);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = procs[idx - 1] ?? procs[procs.length - 1];
+      selectedHwnd.set(prev.hwnd);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (current == null) return;
+      const proc = procs.find((p) => p.hwnd === current);
+      if (!proc) return;
+      if (pinnedStore.isPinned(current, get(pinnedStore))) {
+        unpinWindow(current);
+      } else {
+        pinWindow({ hwnd: proc.hwnd, process_name: proc.name, window_title: proc.window_title, icon: proc.icon });
+      }
+    }
+  }
 
   onMount(async () => {
     const name = await invoke<string>('get_app_name');
@@ -69,7 +99,9 @@
         class="process-list"
         role="listbox"
         aria-label={$t.home.processes}
+        tabindex="0"
         onmouseleave={() => { selectedHwnd.set(null); invoke('clear_highlight').catch(() => {}); }}
+        onkeydown={handleListKeydown}
       >
         {#each $filteredProcesses as proc (proc.hwnd)}
           <ProcessItem

@@ -219,7 +219,7 @@
   transition: border-color $transition-fast, background-color $transition-fast;
   white-space: nowrap;
 
-  &:hover { border-color: rgba(90, 99, 120, 0.5); }
+  &:hover { border-color: $surface-secondary-border; }
   &:focus  { outline: none; }
 
   &--capturing {

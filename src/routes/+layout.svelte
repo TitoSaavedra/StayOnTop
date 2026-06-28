@@ -5,6 +5,8 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { loadSettings } from '$services/settings.service';
+  import { settingsStore } from '$stores/settings.store';
+  import { updateStore } from '$stores/update.store';
   import { t } from '$lib/i18n';
   import type { Snippet } from 'svelte';
 
@@ -17,7 +19,23 @@
     { path: '/settings', label: $t.nav.settings },
   ]);
 
-  onMount(() => { loadSettings(); });
+  onMount(async () => {
+    await loadSettings();
+
+    try {
+      const { check } = await import('@tauri-apps/plugin-updater');
+      const update = await check();
+      if (update?.available) {
+        updateStore.set({ available: true, version: update.version, update });
+      }
+    } catch {
+      // silently ignore update check failures
+    }
+  });
+
+  $effect(() => {
+    document.documentElement.dataset.theme = $settingsStore.theme ?? 'dark';
+  });
 </script>
 
 <div id="app">
@@ -31,6 +49,9 @@
         onclick={() => goto(tab.path)}
       >
         {tab.label}
+        {#if tab.path === '/settings' && $updateStore.available}
+          <span class="nav__update-dot" aria-label="Update available"></span>
+        {/if}
       </button>
     {/each}
   </nav>

@@ -91,6 +91,76 @@
     flex-direction: column;
     gap: $space-2;
   }
+
+  &__pos-toggle {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    margin-top: $space-1;
+    padding: 2px $space-1;
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-size: $font-size-xs;
+    font-family: $font-family;
+    cursor: pointer;
+    border-radius: $radius-sm;
+    transition: color $transition-fast;
+
+    &:hover { color: $text-secondary; }
+
+    svg {
+      transition: transform $transition-fast;
+    }
+  }
+
+  &__pos-arrow--open {
+    transform: rotate(180deg);
+  }
+
+  &__pos {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    margin-top: $space-1;
+  }
+
+  &__pos-row {
+    display: flex;
+    gap: $space-2;
+  }
+
+  &__pos-field {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    flex: 1;
+
+    span {
+      font-size: $font-size-xs;
+      font-weight: 600;
+      color: $text-secondary;
+      min-width: 10px;
+    }
+
+    input[type="number"] {
+      flex: 1;
+      min-width: 0;
+      background-color: $bg-elevated;
+      border: 1px solid $border;
+      border-radius: $radius-sm;
+      color: $text-primary;
+      font-size: $font-size-xs;
+      font-family: monospace;
+      padding: 2px $space-1;
+      outline: none;
+
+      &:focus { border-color: $accent-border; }
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button { opacity: 0.5; }
+    }
+  }
 }
 
 // ── Process list ─────────────────────────────────────────────────────────────

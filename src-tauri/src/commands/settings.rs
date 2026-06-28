@@ -9,6 +9,10 @@ fn default_opacity() -> f32 {
     1.0
 }
 
+fn default_theme() -> String {
+    "dark".into()
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppSettings {
     pub language: String,
@@ -21,6 +25,8 @@ pub struct AppSettings {
     pub hotkey_pin_toggle: String,
     #[serde(default = "default_opacity")]
     pub default_opacity: f32,
+    #[serde(default = "default_theme")]
+    pub theme: String,
 }
 
 impl Default for AppSettings {
@@ -33,6 +39,7 @@ impl Default for AppSettings {
             excluded_processes: vec![],
             hotkey_pin_toggle: default_hotkey_pin_toggle(),
             default_opacity: default_opacity(),
+            theme: default_theme(),
         }
     }
 }

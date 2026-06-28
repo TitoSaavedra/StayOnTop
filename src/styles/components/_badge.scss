@@ -11,7 +11,7 @@
   border: 1px solid transparent;
 
   &--default {
-    background-color: rgba(90, 99, 120, 0.15);
+    background-color: $surface-secondary;
     color: $text-secondary;
     border-color: $border;
   }

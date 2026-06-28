@@ -9,11 +9,11 @@ use commands::{
         unpin_image,
     },
     pinned::{get_pinned, read_pinned, save_pinned},
-    process::{get_app_name, get_processes},
+    process::{get_app_name, get_process_by_hwnd, get_processes},
     settings::{get_settings, register_startup, save_settings},
     window::{
-        do_unpin, get_foreground_window, pin_window, set_window_click_through,
-        set_window_opacity, unpin_window,
+        do_unpin, get_foreground_window, get_window_rect, is_window_valid, pin_window,
+        set_window_click_through, set_window_opacity, set_window_pos_size, unpin_window,
     },
 };
 
@@ -88,11 +88,15 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             get_processes,
             get_app_name,
+            get_process_by_hwnd,
             pin_window,
             unpin_window,
             set_window_opacity,
             set_window_click_through,
             get_foreground_window,
+            is_window_valid,
+            get_window_rect,
+            set_window_pos_size,
             get_settings,
             save_settings,
             register_startup,

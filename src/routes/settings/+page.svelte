@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Select, Checkbox, Slider, Button, Input } from '$components';
+  import { invoke } from '@tauri-apps/api/core';
   import { settingsStore } from '$stores/settings.store';
-  import { saveSettings, setStartWithWindows } from '$services/settings.service';
+  import { saveSettings } from '$services/settings.service';
   import { t } from '$lib/i18n';
   import type { AppSettings } from '$lib/types';
   import { getVersion } from '@tauri-apps/api/app';
@@ -23,7 +24,13 @@
     { value: 'pt-br', label: 'Português (BR)' },
   ];
 
+  const THEME_OPTIONS = $derived([
+    { value: 'dark',  label: $t.settings.themeDark },
+    { value: 'light', label: $t.settings.themeLight },
+  ]);
+
   let settings        = $state<AppSettings | null>(null);
+  let snapshot        = $state('');
   let saving          = $state(false);
   let newExcluded     = $state('');
   let capturingHotkey = $state(false);
@@ -34,11 +41,26 @@
 
   getVersion().then(v => { appVersion = v; });
 
-  $effect(() => { settings = { ...$settingsStore }; });
+  $effect(() => {
+    const stored = $settingsStore; // always tracked so effect reruns when loadSettings() resolves
+    if (settings === null) {
+      settings = { ...stored };
+      snapshot = JSON.stringify(stored);
+    }
+  });
 
+  // Preview theme from local settings without touching the store
+  $effect(() => {
+    if (settings !== null) {
+      document.documentElement.dataset.theme = settings.theme ?? 'dark';
+    }
+  });
+
+  // isDirty compares against the snapshot taken at initial load / last save,
+  // so store patches (e.g. for language preview) don't reset the dirty flag.
   const isDirty = $derived(
-    settings !== null &&
-    JSON.stringify(settings) !== JSON.stringify($settingsStore)
+    settings !== null && snapshot !== '' &&
+    JSON.stringify(settings) !== snapshot
   );
 
   const filteredExcluded = $derived(
@@ -54,12 +76,18 @@
   async function handleSave() {
     if (!settings) return;
     saving = true;
-    try { await saveSettings(settings); } finally { saving = false; }
+    try {
+      await saveSettings(settings);
+      settings = { ...$settingsStore };
+      snapshot = JSON.stringify(settings);
+    } finally { saving = false; }
   }
 
   async function handleStartupToggle() {
     if (!settings) return;
-    await setStartWithWindows(settings.start_with_windows);
+    // Call Rust directly without patching the store so isDirty stays true
+    // and the save banner remains visible for the user to confirm or discard.
+    await invoke('register_startup', { enabled: settings.start_with_windows }).catch(() => {});
   }
 
   function addExcluded() {
@@ -100,7 +128,15 @@
   }
 
   function discardChanges() {
-    settings = { ...$settingsStore };
+    if (!snapshot) return;
+    const orig = JSON.parse(snapshot) as AppSettings;
+    // Revert Rust-side startup registration if the user toggled it
+    if (settings !== null && settings.start_with_windows !== orig.start_with_windows) {
+      invoke('register_startup', { enabled: orig.start_with_windows }).catch(() => {});
+    }
+    // Revert language preview in the store so i18n shows original language
+    settingsStore.patch({ language: orig.language });
+    settings = { ...orig };
   }
 
   async function checkForUpdates() {
@@ -262,6 +298,11 @@
                 options={LANGUAGE_OPTIONS}
                 onchange={handleLanguageChange}
               />
+              <Select
+                label={$t.settings.theme}
+                bind:value={settings.theme}
+                options={THEME_OPTIONS}
+              />
               <Checkbox
                 label={$t.settings.startWithWindows}
                 bind:checked={settings.start_with_windows}
@@ -270,7 +311,6 @@
               <Checkbox
                 label={$t.settings.keepOnTop}
                 bind:checked={settings.keep_app_on_top}
-                onchange={handleSave}
               />
               <Slider
                 label={$t.settings.defaultOpacity}

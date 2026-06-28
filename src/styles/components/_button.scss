@@ -51,15 +51,15 @@
   }
 
   &--secondary {
-    background-color: rgba(90, 99, 120, 0.15);
+    background-color: $surface-secondary;
     color: $text-primary;
     border-color: $border;
 
     &:hover:not(:disabled) {
-      background-color: rgba(90, 99, 120, 0.28);
-      border-color: rgba(90, 99, 120, 0.5);
+      background-color: $surface-secondary-hover;
+      border-color: $surface-secondary-border;
     }
-    &:active:not(:disabled) { background-color: rgba(90, 99, 120, 0.35); }
+    &:active:not(:disabled) { background-color: $surface-secondary-active; }
   }
 
   &--ghost {
@@ -67,10 +67,10 @@
     color: $text-secondary;
 
     &:hover:not(:disabled) {
-      background-color: rgba(90, 99, 120, 0.12);
+      background-color: $surface-hover;
       color: $text-primary;
     }
-    &:active:not(:disabled) { background-color: rgba(90, 99, 120, 0.2); }
+    &:active:not(:disabled) { background-color: $surface-active; }
   }
 
   &--danger {

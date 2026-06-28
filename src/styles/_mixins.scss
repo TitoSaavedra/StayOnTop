@@ -44,7 +44,7 @@
 // Scrollbar styling
 @mixin scrollbar($width: 4px) {
   scrollbar-width: thin;
-  scrollbar-color: rgba(90, 99, 120, 0.4) transparent;
+  scrollbar-color: $scrollbar-thumb transparent;
 
   &::-webkit-scrollbar {
     width: $width;
@@ -55,11 +55,11 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(90, 99, 120, 0.4);
+    background: $scrollbar-thumb;
     border-radius: $radius-full;
 
     &:hover {
-      background: rgba(90, 99, 120, 0.6);
+      background: $scrollbar-thumb-hover;
     }
   }
 }

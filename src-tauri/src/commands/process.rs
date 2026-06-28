@@ -150,6 +150,44 @@ mod win {
             .unwrap_or_default()
     }
 
+    pub fn get_by_hwnd(hwnd_raw: isize) -> Option<ProcessInfo> {
+        unsafe {
+            let h = HWND(hwnd_raw as *mut _);
+
+            let len = GetWindowTextLengthW(h);
+            if len == 0 { return None; }
+            let mut buf = vec![0u16; (len + 1) as usize];
+            GetWindowTextW(h, &mut buf);
+            let title = String::from_utf16_lossy(&buf[..len as usize]);
+
+            let mut pid = 0u32;
+            GetWindowThreadProcessId(h, Some(&mut pid));
+            if pid == 0 { return None; }
+
+            let snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0).ok()?;
+            let mut entry = PROCESSENTRY32W {
+                dwSize: std::mem::size_of::<PROCESSENTRY32W>() as u32,
+                ..Default::default()
+            };
+            let mut name = String::new();
+            if Process32FirstW(snap, &mut entry).is_ok() {
+                loop {
+                    if entry.th32ProcessID == pid {
+                        let nul = entry.szExeFile.iter().position(|&c| c == 0).unwrap_or(entry.szExeFile.len());
+                        name = String::from_utf16_lossy(&entry.szExeFile[..nul]);
+                        break;
+                    }
+                    if Process32NextW(snap, &mut entry).is_err() { break; }
+                }
+            }
+            let _ = CloseHandle(snap);
+            if name.is_empty() { return None; }
+
+            let icon = get_exe_path(pid).and_then(|p| extract_icon(&p));
+            Some(ProcessInfo { pid, name, window_title: title, hwnd: hwnd_raw, icon })
+        }
+    }
+
     pub fn collect(app_name: &str) -> Vec<ProcessInfo> {
         let mut state = EnumState { map: HashMap::new() };
         unsafe {
@@ -214,4 +252,12 @@ pub fn get_app_name() -> String {
     { win::own_name() }
     #[cfg(not(target_os = "windows"))]
     { String::new() }
+}
+
+#[tauri::command]
+pub fn get_process_by_hwnd(hwnd: isize) -> Option<ProcessInfo> {
+    #[cfg(target_os = "windows")]
+    { win::get_by_hwnd(hwnd) }
+    #[cfg(not(target_os = "windows"))]
+    { None }
 }

@@ -4,6 +4,7 @@ import { get } from 'svelte/store';
 import { pinnedStore } from '$stores/pinned.store';
 import { processesStore } from '$stores/processes.store';
 import { pinWindow, unpinWindow } from '$services/window.service';
+import type { ProcessInfo } from '$lib/types';
 
 let activeShortcut: string | null = null;
 
@@ -33,9 +34,14 @@ async function handleShortcut() {
     return;
   }
 
-  // Find the process in the raw list (not filtered — search might hide it)
+  // Find in the current process list first
   const procs = get(processesStore);
-  const proc = procs.find((p) => p.hwnd === hwnd);
+  let proc: ProcessInfo | undefined = procs.find((p) => p.hwnd === hwnd);
+
+  // Fallback: ask Rust to identify the window directly
+  if (!proc) {
+    proc = await invoke<ProcessInfo | null>('get_process_by_hwnd', { hwnd }) ?? undefined;
+  }
 
   if (proc) {
     await pinWindow({

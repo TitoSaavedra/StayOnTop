@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
 import { get } from 'svelte/store';
-import type { PinnedWindow } from '$lib/types';
+import type { PinnedWindow, WindowRect } from '$lib/types';
 import { pinnedStore } from '$stores/pinned.store';
 import { settingsStore } from '$stores/settings.store';
 
@@ -42,4 +42,12 @@ export async function updatePinnedClickThrough(hwnd: number, click_through: bool
   await invoke('set_window_click_through', { hwnd, clickThrough: click_through });
   pinnedStore.update(hwnd, { click_through });
   await savePinnedState();
+}
+
+export async function getWindowRect(hwnd: number): Promise<WindowRect | null> {
+  return invoke<WindowRect | null>('get_window_rect', { hwnd }).catch(() => null);
+}
+
+export async function setWindowPosSize(hwnd: number, x: number, y: number, width: number, height: number): Promise<void> {
+  await invoke('set_window_pos_size', { hwnd, x, y, width, height }).catch(() => {});
 }
